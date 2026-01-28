@@ -1,1 +1,1 @@
-# Proyecto que trata de recrear mecanicas del juego Arkanoid y más
+# Proyecto de Recreación de Mario Bros de la NES
