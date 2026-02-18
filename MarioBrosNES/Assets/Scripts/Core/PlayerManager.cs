@@ -2,24 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Maneja el estado del jugador (Small, Super, Fire), sprites y lógica de power-ups.
+/// </summary>
 public class PlayerManager : MonoBehaviour
 {
+    /// <summary>
+    /// Estados posibles del jugador.
+    /// </summary>
     public enum PlayerState { Small, Super, Fire }
     public PlayerState state = PlayerState.Small;
 
-    public Sprite smallSprite;
-    public Sprite superSprite;
-    public Sprite fireSprite;
+    [SerializeField] private Sprite smallSprite;
+    [SerializeField] private Sprite superSprite;
+    [SerializeField] private Sprite fireSprite;
+    [SerializeField] private Animator animator;
 
-    private SpriteRenderer sr;
-    private BoxCollider2D bc;
+    private SpriteRenderer _sr;
+    private CapsuleCollider2D _cc;
+    private bool isInvulnerable = false;
 
+    /// <summary>
+    /// Obtiene referencias a SpriteRenderer y BoxCollider2D usados para cambiar apariencia y colisión.
+    /// </summary>
     private void Awake()
     {
-        sr = GetComponent<SpriteRenderer>();
-        bc = GetComponent<BoxCollider2D>();
+        _sr = GetComponent<SpriteRenderer>();
+        _cc = GetComponent<CapsuleCollider2D>();
     }
 
+    /// <summary>
+    /// Aplica el efecto de un power-up sobre el jugador.
+    /// </summary>
+    /// <param name="type">Tipo de power-up a aplicar</param>
     public void ApplyPowerUp(PowerUpType type)
     {
         switch (type)
@@ -32,9 +47,18 @@ public class PlayerManager : MonoBehaviour
                 if (state != PlayerState.Fire) state = PlayerState.Fire;
                 ChangeState(PlayerState.Fire);
                 break;
+            case PowerUpType.Star:
+                // Activate invincibility logic here
+                break;
+            case PowerUpType.Up_1:
+                // Metodo para vidas extra
+                break;
         }
     }
 
+    /// <summary>
+    /// Cambia el estado del jugador y actualiza sprite y collider.
+    /// </summary>
     private void ChangeState(PlayerState newState)
     {
         state = newState;
@@ -42,31 +66,71 @@ public class PlayerManager : MonoBehaviour
         switch (state)
         {
             case PlayerState.Small:
-                sr.sprite = smallSprite;
-                bc.size = new Vector2(0.6f, 1f);
+                _sr.sprite = smallSprite;
+                _cc.size = new Vector2(0.7f, 1f);
+                transform.position = new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z);
+                animator.SetInteger("MarioState", 0);
+                animator.SetTrigger("MarioChanged");
                 break;
 
             case PlayerState.Super:
-                sr.sprite = superSprite;
-                bc.size = new Vector2(0.6f, 2f);
+                _sr.sprite = superSprite;
+                _cc.size = new Vector2(0.7f, 2f);
+                animator.SetInteger("MarioState", 1);
+                animator.SetTrigger("MarioChanged");
                 break;
 
             case PlayerState.Fire:
-                sr.sprite = fireSprite;
-                bc.size = new Vector2(0.6f, 2f);
+                _sr.sprite = fireSprite;
+                _cc.size = new Vector2(0.7f, 2f);
+                animator.SetInteger("MarioState", 2);
+                animator.SetTrigger("MarioChanged");
                 break;
+
         }
     }
 
+    /// <summary>
+    /// Procesa daño recibido y cambia el estado del jugador en consecuencia.
+    /// </summary>
     public void TakeDamage()
     {
-        if (state == PlayerState.Fire) state = PlayerState.Super;
-        else if (state == PlayerState.Super) state = PlayerState.Small;
-        else if (state == PlayerState.Small) Die();
+        if (isInvulnerable) return;
+
+        if (state == PlayerState.Fire) ChangeState(PlayerState.Super);
+        else if (state == PlayerState.Super) ChangeState(PlayerState.Small);
+        else if (state == PlayerState.Small)
+        {
+            Die();
+            return; 
+        }
+
+
+        StartCoroutine(TemporaryInvulnerability(5f));
     }
+
+    private IEnumerator TemporaryInvulnerability(float duration)
+    {
+        isInvulnerable = true;
+
+
+        int playerLayer = LayerMask.NameToLayer("Player");
+        int enemyLayer = LayerMask.NameToLayer("Enemigos");
+        Physics2D.IgnoreLayerCollision(playerLayer, enemyLayer, true);
+
+        
+
+        yield return new WaitForSeconds(duration);
+
+        Physics2D.IgnoreLayerCollision(playerLayer, enemyLayer, false);
+        isInvulnerable = false;
+    }
+    /// <summary>
+    /// Lógica de muerte del jugador (puede ampliarse para efectos, reinicios o vidas).
+    /// </summary>
     private void Die()
     {
-        // Handle player death logic here
+
         Debug.Log("Player has died.");
     }
 }

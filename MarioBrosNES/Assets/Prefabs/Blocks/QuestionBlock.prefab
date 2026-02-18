@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4859444633113831581}
   - component: {fileID: 2547499892018764781}
   - component: {fileID: 5986444939744672843}
-  - component: {fileID: 8289660990591973375}
+  - component: {fileID: -2804992461075341876}
   m_Layer: 3
   m_Name: QuestionBlock
   m_TagString: Untagged
@@ -174,54 +174,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isCoinBlock: 0
   isPowerUpBlock: 1
+  is1UpBlock: 0
+  isStarBlock: 0
+  isMultiCoinBlock: 0
+  multiCoinDuration: 5
   velocity: 4
   offsetY: 0.5
   CoinPrefab: {fileID: 3345447145516285424, guid: 9ddaea4dcda465d45b24359309acac40, type: 3}
   PowerPrefabMush: {fileID: 1938181752610285547, guid: f42cc29047ef0ed4b91d3e2fbd8bab25, type: 3}
   PowerPrefabFlower: {fileID: 1938181752610285547, guid: e81fee4249b470242bd5ed016cb119a5, type: 3}
+  OneUpPrefab: {fileID: 1938181752610285547, guid: fe9a214d6367d2e40bcad24b25a1e957, type: 3}
+  StarPrefab: {fileID: 1938181752610285547, guid: d78d66c9491c31e4da96c9bea879beec, type: 3}
   usedSprite: {fileID: 919472603, guid: af54a74f74c008146a497e34ffdf4093, type: 3}
---- !u!61 &8289660990591973375
-BoxCollider2D:
+--- !u!95 &-2804992461075341876
+Animator:
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8246901145695150090}
   m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.5}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.9, y: 0.1}
-  m_EdgeRadius: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d5f70d664deb0e342aef88b920193247, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

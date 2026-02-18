@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 2810264027169870625}
   - component: {fileID: 3287944523347723791}
   - component: {fileID: 933215699080357343}
-  - component: {fileID: 5045650376320336889}
   m_Layer: 3
   m_Name: BreakBlock
   m_TagString: Untagged
@@ -174,56 +173,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isCoinBlock: 1
   isPowerUpBlock: 0
+  is1UpBlock: 0
+  isStarBlock: 0
+  isMultiCoinBlock: 0
+  multiCoinDuration: 5
   velocity: 4
   offsetY: 0.5
   CoinPrefab: {fileID: 3345447145516285424, guid: 9ddaea4dcda465d45b24359309acac40, type: 3}
   PowerPrefabMush: {fileID: 1938181752610285547, guid: f42cc29047ef0ed4b91d3e2fbd8bab25, type: 3}
-  PowerPrefabFlower: {fileID: 0}
+  PowerPrefabFlower: {fileID: 1938181752610285547, guid: e81fee4249b470242bd5ed016cb119a5, type: 3}
+  OneUpPrefab: {fileID: 1938181752610285547, guid: fe9a214d6367d2e40bcad24b25a1e957, type: 3}
+  StarPrefab: {fileID: 1938181752610285547, guid: d78d66c9491c31e4da96c9bea879beec, type: 3}
   isBreakable: 0
-  usedSprite: {fileID: 919472603, guid: af54a74f74c008146a497e34ffdf4093, type: 3}
+  blockedSprite: {fileID: 919472603, guid: af54a74f74c008146a497e34ffdf4093, type: 3}
   isUsed: 0
---- !u!61 &5045650376320336889
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2097341237000410797}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.5}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.9, y: 0.1}
-  m_EdgeRadius: 0
