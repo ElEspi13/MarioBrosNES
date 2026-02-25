@@ -42,7 +42,6 @@ public class BlockBase : MonoBehaviour
     /// </summary>
     private void Start()
     {
-        player = GameObject.FindWithTag("Player").GetComponent<PlayerManager>();
         this.originalPosition = this.transform.position;
         this.powerUpTargetPosition = transform.position + Vector3.up * 1f;
         ResetTargetBlockPosition();
@@ -151,6 +150,7 @@ public class BlockBase : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            player = collision.gameObject.GetComponent<PlayerManager>();
             foreach (ContactPoint2D contact in collision.contacts)
             {
                 if (contact.normal.y > 0.5f) 

@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Koopa : EnemigoBase
 {
@@ -19,8 +21,9 @@ public class Koopa : EnemigoBase
     private bool isShell = false;
     private bool isMovingShell = false;
     private float wakeUpCounter;
+    private bool canKill = false;
 
-     void Start()
+    void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -67,6 +70,7 @@ public class Koopa : EnemigoBase
 
     private void StopShell()
     {
+        canMove = false;
         isMovingShell = false;
         rb.velocity = Vector2.zero;
         wakeUpCounter = wakeUpTime;
@@ -76,14 +80,29 @@ public class Koopa : EnemigoBase
 
     private void LaunchShell()
     {
+        canMove = true;
         isMovingShell = true;
+        canKill = false;
 
         GameObject mario = GameObject.FindGameObjectWithTag("Player");
 
-        float direction = transform.position.x < mario.transform.position.x ? -1f : 1f;
+        Vector2 direction = new Vector2(
+            transform.position.x < mario.transform.position.x ? -1f : 1f,
+            0f
+        );
 
-        rb.velocity = new Vector2(direction * shellSpeed, rb.velocity.y);
+        ChangeSpeed(shellSpeed);
+        ChangeDirection(direction);
+
+        StartCoroutine(EnableHurtAfterDelay());
     }
+
+    private IEnumerator EnableHurtAfterDelay()
+    {
+        yield return new WaitForSeconds(5f);
+        canKill = true;
+    }
+
 
 
     private void Update()
@@ -110,6 +129,58 @@ public class Koopa : EnemigoBase
 
     }
 
-    
+    protected override void OnPlayerCollision(Collision2D collision)
+    {
+        PlayerManager player = collision.collider.GetComponent<PlayerManager>();
+        if (player == null) return;
+
+        if (player.IsStarActive())
+        {
+            Die();
+            return;
+        }
+
+        if (isShell && isMovingShell)
+        {
+            foreach (ContactPoint2D contact in collision.contacts)
+            {
+                if (contact.normal.x != 0) 
+                {
+                    player.TakeDamage();
+                    break;
+                }
+            }
+            return; 
+        }
+
+        if (isShell && !isMovingShell)
+        {
+            Rigidbody2D playerRb = collision.collider.GetComponent<Rigidbody2D>();
+            if (playerRb != null)
+            {
+                LaunchShell(); 
+            }
+            return; 
+        }
+
+        player.TakeDamage();
+    }
+
+    protected override void OnCollisionEnter2D(Collision2D collision)
+    {
+        base.OnCollisionEnter2D(collision); 
+
+
+        if (isShell && isMovingShell && collision.collider.CompareTag("Enemy"))
+        {
+            EnemigoBase enemy = collision.collider.GetComponent<EnemigoBase>();
+            if (enemy != null && enemy != this)
+            {
+                enemy.Die();
+            }
+        }
+    }
+
+
 
 }

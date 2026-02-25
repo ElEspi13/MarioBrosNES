@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemigoBase : MonoBehaviour
 {
-    [SerializeField] private float speed = 2f;
+    [SerializeField] private float speed = 3f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float rayDistance = 0.1f;
     [SerializeField] private float bounceForce = 3f;
@@ -33,7 +34,18 @@ public class EnemigoBase : MonoBehaviour
             _rb.velocity = new Vector2(direction.x * speed, _rb.velocity.y);
             CheckWall();
         }
+        
 
+    }
+
+    public void ChangeSpeed(float newSpeed)
+    {
+        speed = newSpeed;
+    }
+
+    public void ChangeDirection(Vector2 newdirection)
+    {
+        direction = newdirection;
     }
 
 
@@ -59,9 +71,9 @@ public class EnemigoBase : MonoBehaviour
     }
 
     /// <summary>
-    /// Detecta colisión con el jugador y aplica el power-up de tipo Up_1 (vida extra).
+    /// Detecta colisión con el jugador.
     /// </summary>
-    private void OnCollisionEnter2D(Collision2D collision)
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         if (!collision.collider.CompareTag("Player"))
             return;
@@ -72,7 +84,7 @@ public class EnemigoBase : MonoBehaviour
             {
                 Rigidbody2D playerRb = collision.collider.GetComponent<Rigidbody2D>();
                 if (playerRb != null)
-                    playerRb.AddForce(Vector2.up * bounceForce, ForceMode2D.Impulse);
+                    playerRb.velocity = new Vector2(playerRb.velocity.x, bounceForce);
 
                 onStomp();
                 return;
@@ -85,12 +97,40 @@ public class EnemigoBase : MonoBehaviour
 
     protected virtual void OnPlayerCollision(Collision2D collision)
     {
-        collision.collider.GetComponent<PlayerManager>().TakeDamage();
+        PlayerManager player = collision.collider.GetComponent<PlayerManager>();
+        if (player == null) return;
+
+        if (player.IsStarActive()) // verificamos si la estrella está activa
+        {
+            Die();
+        }
+        else
+        {
+            player.TakeDamage(); // daño normal
+        }
     }
 
     protected virtual void onStomp()
     {
         Destroy(gameObject);
+    }
+
+    public void Die()
+    {
+        Destroy(gameObject);
+    }
+
+
+    private void OnDrawGizmos()
+    {
+        if (_col == null) return;
+        Bounds b = _col.bounds;
+        Vector2 origin = new Vector2(
+            direction.x > 0 ? b.max.x : b.min.x,
+            b.center.y
+        );
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(origin, origin + direction * rayDistance);
     }
 
 }

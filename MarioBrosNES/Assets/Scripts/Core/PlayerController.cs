@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
@@ -27,10 +28,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _deceleration= 10f;
     [SerializeField] private float fallMultiplier = 2.5f;
     [SerializeField] private float lowJumpMultiplier = 2f;
+    [SerializeField] private float deathJumpForce = 12f;
+    [SerializeField] private float deathGravity = 3f;
+    [SerializeField] private float deathDelay = 0.4f;
 
     private bool _isRunning;
     private bool _jumpStarted;
     private bool _wasGrounded;
+    private bool _isDead = false;
 
 
     /// <summary>
@@ -58,6 +63,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void Update()
     {
+        if(_isDead) return;
         this._moveInput = InputManager.Actions.Player.Move.ReadValue<Vector2>();
 
         bool grounded = IsGrounded();
@@ -82,6 +88,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void FixedUpdate()
     {
+        if (_isDead) return;
         Move();
         Run();
         // Mejorar gravedad estilo Mario
@@ -200,8 +207,48 @@ public class PlayerController : MonoBehaviour
         }
         
     }
-    
-    
+
+    private void OnDisable()
+    {
+        if (InputManager.Actions != null)
+        {
+            InputManager.Actions.Player.Jump.performed -= HandleJump;
+        }
+    }
+    public void Die()
+    {
+        if (_isDead) return;
+
+        _isDead = true;
+        StartCoroutine(DeathRoutine());
+    }
+
+    private IEnumerator DeathRoutine()
+    {
+        InputManager.Actions.Player.Disable();
+
+        _col.enabled = false;
+
+        _rg.velocity = Vector2.zero;
+        _rg.gravityScale = 0f;
+
+        _animator.SetBool("Die",true);
+
+        yield return new WaitForSeconds(deathDelay);
+
+        _rg.gravityScale = deathGravity;
+        _rg.velocity = new Vector2(0f, deathJumpForce);
+
+        yield return new WaitForSeconds(2f);
+
+        UnityEngine.SceneManagement.SceneManager.LoadScene(
+            UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex
+        );
+        GameManager.Instance.Respawn();
+        Destroy(gameObject);
+    }
+
+
 
 
 

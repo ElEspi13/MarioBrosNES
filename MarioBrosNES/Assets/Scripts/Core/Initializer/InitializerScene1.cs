@@ -10,6 +10,7 @@ public class InitializerScene1 : MonoBehaviour
     private void Awake()
     {
         InputManager.SwitchMap(InputManager.Actions.Player);
+        GameManager.Instance.ResetPlayerPosition();
     }
 }
 
