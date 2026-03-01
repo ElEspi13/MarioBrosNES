@@ -1,0 +1,48 @@
+{
+  "traducciones": [
+    {
+      "key": "_Play",
+      "value": "PLAY"
+    },
+    {
+      "key": "_Config",
+      "value": "Settings"
+    },
+    {
+      "key": "_Exit",
+      "value": "Exit"
+    },
+    {
+      "key": "_Lives",
+      "value": "LIVES"
+    },
+    {
+      "key": "_Time",
+      "value": "Time"
+    },
+    {
+      "key": "_Level",
+      "value": "World"
+    },
+    {
+      "key": "_Dificulty",
+      "value": "Difficulty"
+    },
+    {
+      "key": "_Easy",
+      "value": "Easy"
+    },
+    {
+      "key": "_Normal",
+      "value": "Normal"
+    },
+    {
+      "key": "_Hard",
+      "value": "Hard"
+    },
+    {
+      "key": "_Language",
+      "value": "Language"
+    }
+  ]
+}

@@ -5,28 +5,42 @@ using UnityEngine;
 public class i18n
 {
     private Dictionary<string, string> translationsDictionary;
+    public TextAsset jsonFile;
+    public event Action OnLanguageChanged;
+
     public i18n()
     {
-        TextAsset jsonFile = Resources.Load<TextAsset>($"i18n/_es");
-        TranslationsWrapper content= JsonUtility.FromJson<TranslationsWrapper>(jsonFile.text);
-        this.translationsDictionary= this.ConvertListToDictionary(content.traducciones);
+        LoadLanguage("es"); 
     }
 
-    private Dictionary<string,string> ConvertListToDictionary(List<Translations> traducciones)
+    public void LoadLanguage(string langCode)
+    {
+        TextAsset jsonFile = Resources.Load<TextAsset>($"i18n/_{langCode}");
+        if (jsonFile == null)
+        {
+            Debug.LogWarning($"No se encontró el archivo de idioma: {langCode}");
+            return;
+        }
+
+        TranslationsWrapper content = JsonUtility.FromJson<TranslationsWrapper>(jsonFile.text);
+        this.translationsDictionary = ConvertListToDictionary(content.traducciones);
+        OnLanguageChanged?.Invoke();
+    }
+
+    private Dictionary<string, string> ConvertListToDictionary(List<Translations> traducciones)
     {
         Dictionary<string, string> dict = new Dictionary<string, string>();
         foreach (var item in traducciones)
         {
-            dict.Add(item.key, item.value);
+            dict[item.key] = item.value;
         }
         return dict;
     }
+
     public string GetTranslation(string key)
     {
-        if (this.translationsDictionary.ContainsKey(key))
-        {
-            return this.translationsDictionary[key];
-        }
+        if (translationsDictionary != null && translationsDictionary.ContainsKey(key))
+            return translationsDictionary[key];
         return key;
     }
 }

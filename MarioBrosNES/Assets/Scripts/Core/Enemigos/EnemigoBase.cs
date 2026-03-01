@@ -71,7 +71,7 @@ public class EnemigoBase : MonoBehaviour
     }
 
     /// <summary>
-    /// Detecta colisión con el jugador.
+    /// Maneja la colisión con el jugador: si el contacto es desde arriba, se considera un stomp y se llama a onStomp(). Si no, se delega a OnPlayerCollision() para manejar daño o muerte del jugador.
     /// </summary>
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
@@ -80,6 +80,7 @@ public class EnemigoBase : MonoBehaviour
 
         foreach (ContactPoint2D contact in collision.contacts)
         {
+            Debug.Log($"Contact normal: {contact.normal}");
             if (contact.normal.y < -0.5f)
             {
                 Rigidbody2D playerRb = collision.collider.GetComponent<Rigidbody2D>();
@@ -95,6 +96,10 @@ public class EnemigoBase : MonoBehaviour
         OnPlayerCollision(collision);
     }
 
+    /// <summary>
+    /// Metodo para manejar la colisión con el jugador, que puede ser overrideado por los enemigos hijos para comportamientos específicos.
+    /// </summary>
+    /// <param name="collision"></param>
     protected virtual void OnPlayerCollision(Collision2D collision)
     {
         PlayerManager player = collision.collider.GetComponent<PlayerManager>();
@@ -110,28 +115,23 @@ public class EnemigoBase : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Metodo que se llama cuando el enemigo es pisoteado por el jugador. Por defecto, destruye el enemigo, pero puede ser overrideado para animaciones o efectos especiales.
+    /// </summary>
     protected virtual void onStomp()
     {
         Destroy(gameObject);
     }
 
+    /// <summary>
+    /// Metodo para destruir el enemigo, puede ser llamado desde otros scripts (como proyectiles) para eliminar al enemigo sin necesidad de pisotearlo.
+    /// </summary>
     public void Die()
     {
         Destroy(gameObject);
     }
 
 
-    private void OnDrawGizmos()
-    {
-        if (_col == null) return;
-        Bounds b = _col.bounds;
-        Vector2 origin = new Vector2(
-            direction.x > 0 ? b.max.x : b.min.x,
-            b.center.y
-        );
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(origin, origin + direction * rayDistance);
-    }
 
 }
     

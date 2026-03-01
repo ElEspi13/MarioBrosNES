@@ -1,0 +1,48 @@
+{
+  "traducciones": [
+    {
+      "key": "_Play",
+      "value": "JUGAR"
+    },
+    {
+      "key": "_Config",
+      "value": "Configuración"
+    },
+    {
+      "key": "_Exit",
+      "value": "Salir"
+    },
+    {
+      "key": "_Lives",
+      "value": "VIDAS"
+    },
+    {
+      "key": "_Time",
+      "value": "Tiempo"
+    },
+    {
+      "key": "_Level",
+      "value": "Mundo"
+    },
+    {
+      "key": "_Dificulty",
+      "value": "Dificultad"
+    },
+    {
+      "key": "_Easy",
+      "value": "Facil"
+    },
+    {
+      "key": "_Normal",
+      "value": "Normal"
+    },
+    {
+      "key": "_Hard",
+      "value": "Dificil"
+    },
+    {
+      "key": "_Language",
+      "value": "Idioma"
+    }
+  ]
+}

@@ -11,9 +11,13 @@ public class Goomba : EnemigoBase
         GetComponent<Animator>().enabled = false;
         GetComponent<SpriteRenderer>().sprite = StompedSprite;
         StartCoroutine(DeathRoutine());
+        GameManager.Instance.AddStompComboPoints();
     }
-
-        private IEnumerator DeathRoutine()
+    /// <summary>
+    /// Muerte del Goomba: espera un breve tiempo para mostrar la animación de aplastado antes de destruir el objeto del juego.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator DeathRoutine()
         {
             yield return new WaitForSeconds(0.5f);
             Destroy(gameObject);

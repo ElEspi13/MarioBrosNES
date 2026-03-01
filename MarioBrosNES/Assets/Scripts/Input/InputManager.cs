@@ -33,4 +33,14 @@ public class InputManager
         Actions.Player.Disable();
         mapToActivate.Enable();
     }
+
+    /// <summary>
+    /// Desactiva el mapa de acciones indicado, dejando sin acciones activas. Útil para pausar el juego o deshabilitar la entrada temporalmente.
+    /// </summary>
+    /// <param name="mapToActivate"></param>
+    public static void DisableMap(InputActionMap mapToActivate)
+    {
+        mapToActivate.Disable();
+    }
+
 }

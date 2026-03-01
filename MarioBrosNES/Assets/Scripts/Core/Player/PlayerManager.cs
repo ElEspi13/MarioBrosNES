@@ -14,9 +14,6 @@ public class PlayerManager : MonoBehaviour
     public enum PlayerState { Small, Super, Fire }
     public PlayerState state = PlayerState.Small;
 
-    [SerializeField] private Sprite smallSprite;
-    [SerializeField] private Sprite superSprite;
-    [SerializeField] private Sprite fireSprite;
     [SerializeField] private Animator animator;
 
     private SpriteRenderer _sr;
@@ -55,7 +52,7 @@ public class PlayerManager : MonoBehaviour
                 ActivateStar(10f);
                 break;
             case PowerUpType.Up_1:
-                // Metodo para vidas extra
+                GameManager.Instance.AddLife(1);
                 break;
         }
     }
@@ -70,7 +67,6 @@ public class PlayerManager : MonoBehaviour
         switch (state)
         {
             case PlayerState.Small:
-                _sr.sprite = smallSprite;
                 _cc.size = new Vector2(0.7f, 1f);
                 transform.position = new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z);
                 animator.SetInteger("MarioState", 0);
@@ -79,14 +75,12 @@ public class PlayerManager : MonoBehaviour
                 break;
 
             case PlayerState.Super:
-                _sr.sprite = superSprite;
                 _cc.size = new Vector2(0.7f, 2f);
                 animator.SetInteger("MarioState", 1);
 
                 break;
 
             case PlayerState.Fire:
-                _sr.sprite = fireSprite;
                 _cc.size = new Vector2(0.7f, 2f);
                 animator.SetInteger("MarioState", 2);
 
@@ -118,6 +112,11 @@ public class PlayerManager : MonoBehaviour
             yield return StartCoroutine(TemporaryInvulnerability(3f));
     }
 
+    /// <summary>
+    /// Metodo para invulnerabilidad temporal: activa un estado de invulnerabilidad durante una duración determinada, alternando la visibilidad del sprite para indicar el estado y desactivando las colisiones con enemigos durante ese tiempo.
+    /// </summary>
+    /// <param name="duration"></param>
+    /// <returns></returns>
     private IEnumerator TemporaryInvulnerability(float duration)
     {
         isInvulnerable = true;
@@ -142,6 +141,11 @@ public class PlayerManager : MonoBehaviour
         isInvulnerable = false;
     }
 
+    /// <summary>
+    /// Metodo para manejar la transición entre estados del jugador con animación y pausa temporal para efecto visual.
+    /// </summary>
+    /// <param name="newState"></param>
+    /// <returns></returns>
     private IEnumerator IsChangingState(PlayerState newState)
     {
         isTransforming = true;
@@ -175,6 +179,10 @@ public class PlayerManager : MonoBehaviour
         GetComponent<PlayerController>().Die();
     }
 
+    /// <summary>
+    /// Activa el estado de estrella por una duración determinada, otorgando invulnerabilidad.
+    /// </summary>
+    /// <param name="duration"></param>
     public void ActivateStar(float duration)
     {
         if (!isStarActive)
@@ -191,6 +199,10 @@ public class PlayerManager : MonoBehaviour
         animator.SetBool("IsStarActive", false);
     }
 
+    /// <summary>
+    /// Metod para verificar si el estado de estrella está activo, utilizado por enemigos para determinar si deben morir al contacto o no.
+    /// </summary>
+    /// <returns></returns>
     public bool IsStarActive()
     {
         return isStarActive;

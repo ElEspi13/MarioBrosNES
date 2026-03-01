@@ -14,6 +14,7 @@ public class TranslateItem : MonoBehaviour
     void Awake()
     {
         this.Texto = GetComponent<TextMeshProUGUI>();
+        Main.translateManager.OnLanguageChanged += UpdateText;
     }
     void Start()
     {
@@ -21,9 +22,10 @@ public class TranslateItem : MonoBehaviour
         this.Texto.text = Main.translateManager.GetTranslation(this.key);
     }
 
-    // Update is called once per frame
-    void Update()
+
+    private void UpdateText()
     {
-        
+        if (Main.translateManager != null)
+            Texto.text = Main.translateManager.GetTranslation(key);
     }
 }

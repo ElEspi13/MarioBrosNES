@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
@@ -79,6 +80,10 @@ public class PlayerController : MonoBehaviour
             _jumpStarted = false;
             _animator.SetBool("isJumping", false);
         }
+        if (!_wasGrounded && grounded)
+        {
+            GameManager.Instance.ResetStompCombo();
+        }
 
         _wasGrounded = grounded;
     }
@@ -91,7 +96,9 @@ public class PlayerController : MonoBehaviour
         if (_isDead) return;
         Move();
         Run();
-        // Mejorar gravedad estilo Mario
+        Pause();
+
+        // Hace que el jugador caiga más rápido que la gravedad normal, o recorte el salto si se suelta la tecla.
         if (_rg.velocity.y < 0)
         {
             _rg.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.fixedDeltaTime;
@@ -106,6 +113,7 @@ public class PlayerController : MonoBehaviour
            _spriteRenderer.flipX = false;
         else if (_moveInput.x < -0.1f)
            _spriteRenderer.flipX = true;
+        
     }
 
     /// <summary>
@@ -113,7 +121,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void Run()
     {
-        if (InputManager.Actions.Player.Run.IsPressed())
+        if (InputManager.Actions.Player.Run.IsPressed()&& !_isDead)
         {
             _maxVelocity = 8f;
         }
@@ -121,6 +129,14 @@ public class PlayerController : MonoBehaviour
         {
             _maxVelocity = 3f;
         }
+    }
+
+    private void Pause()
+        {
+            if (InputManager.Actions.Player.Pause.IsPressed())
+            {
+                GameManager.Instance.TogglePause();
+            }
     }
 
     /// <summary>
@@ -153,6 +169,10 @@ public class PlayerController : MonoBehaviour
     {
         _animator.SetFloat("xVelocity", Math.Abs(_rg.velocity.x));
     }
+
+    /// <summary>
+    /// Animacion de frenado: activa el parámetro "isBraking" si el jugador está cambiando de dirección mientras se mueve a cierta velocidad.
+    /// </summary>
     private void AnimatorBrake()
     {
         float velocityX = _rg.velocity.x;
@@ -215,6 +235,10 @@ public class PlayerController : MonoBehaviour
             InputManager.Actions.Player.Jump.performed -= HandleJump;
         }
     }
+
+    /// <summary>
+    /// Maneja la muerte del jugador: deshabilita controles, anima la muerte, aplica física de muerte y reinicia la escena después de un retraso.
+    /// </summary>
     public void Die()
     {
         if (_isDead) return;
@@ -244,7 +268,9 @@ public class PlayerController : MonoBehaviour
         UnityEngine.SceneManagement.SceneManager.LoadScene(
             UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex
         );
-        GameManager.Instance.Respawn();
+        
+        GameManager.Instance.LoseLife();
+
         Destroy(gameObject);
     }
 

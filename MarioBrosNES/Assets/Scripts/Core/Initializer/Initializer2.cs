@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Initializer2 : MonoBehaviour
 {
-    // Start is called before the first frame update
+    /// <summary>
+    /// Inicializa la posición del jugador al inicio del nivel utilizando el GameManager para resetear la posición del jugador.
+    /// </summary>
     void Start()
     {
         GameManager.Instance.ResetPlayerPosition();

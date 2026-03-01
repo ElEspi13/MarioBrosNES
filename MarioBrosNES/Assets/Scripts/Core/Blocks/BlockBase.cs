@@ -125,6 +125,10 @@ public class BlockBase : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Bloque de monedas múltiples: activa un estado temporal que permite otorgar monedas adicionales al ser golpeado repetidamente durante su duración.
+    /// </summary>
+    /// <returns></returns>
     protected IEnumerator MultiCoinRoutine()
     {
         multiCoinActive = true;
@@ -201,6 +205,8 @@ public class BlockBase : MonoBehaviour
 
         GameObject Coin = Instantiate(CoinPrefab, this.transform.position + Vector3.up, Quaternion.identity);
         StartCoroutine(EmergeAnimationCoin(Coin));
+        GameManager.Instance.AddCoin();
+        GameManager.Instance.AddScore(200);
 
     }
 

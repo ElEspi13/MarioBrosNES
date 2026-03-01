@@ -57,8 +57,8 @@ public class PowerUpBase : MonoBehaviour
     {
 
         player.GetComponent<PlayerManager>().ApplyPowerUp(type);
+        GameManager.Instance.AddScore(1000);  
 
-        
         rb.simulated = false;
         col.isTrigger= false;
 

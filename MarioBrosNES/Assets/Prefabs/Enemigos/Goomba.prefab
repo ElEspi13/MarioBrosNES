@@ -177,7 +177,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 264
   rayDistance: 0.1
-  bounceForce: 50
+  bounceForce: 10
+  isActive: 0
   StompedSprite: {fileID: 624971044, guid: f9ff466ef87b40d498eab3b55b2e1382, type: 3}
 --- !u!95 &2432118063192243718
 Animator:

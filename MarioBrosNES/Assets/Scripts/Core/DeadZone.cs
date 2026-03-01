@@ -24,6 +24,6 @@ public class DeadZone : MonoBehaviour
             UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex
         );
         Destroy(Player.gameObject);
-        GameManager.Instance.Respawn();
+        GameManager.Instance.LoseLife();
     }
 }

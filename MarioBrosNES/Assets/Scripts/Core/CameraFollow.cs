@@ -15,6 +15,10 @@ public class CameraFollow : MonoBehaviour
         maxCameraX = transform.position.x;
     }
 
+    /// <summary>
+    /// Maneja la asignación del objetivo de seguimiento para la cámara, actualizando la posición inicial de la cámara en función de la posición del jugador y estableciendo el límite máximo de desplazamiento horizontal para evitar que la cámara retroceda.
+    /// </summary>
+    /// <param name="newPlayer"></param>
     public void SetTarget(Transform newPlayer)
     {
         player = newPlayer;
@@ -26,7 +30,9 @@ public class CameraFollow : MonoBehaviour
         );
     }
 
-
+    /// <summary>
+    /// Mueve la camara para seguir al jugador solo en la dirección horizontal (eje X), asegurando que la cámara no retroceda por detrás del jugador al actualizar su posición cada frame. Si el jugador se mueve hacia adelante, la cámara se desplazará para mantenerlo dentro de la vista, pero si el jugador retrocede, la cámara permanecerá en su posición actual sin retroceder.
+    /// </summary>
     void LateUpdate()
     {
         if(player== null) return;
