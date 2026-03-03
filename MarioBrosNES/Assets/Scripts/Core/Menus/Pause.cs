@@ -8,6 +8,7 @@ public class PauseMenu : MonoBehaviour
     [Header("Opciones del menú")]
     [SerializeField] private TextMeshProUGUI[] options;
     [SerializeField] private RectTransform cursor;
+    
 
     private int selectedIndex = 0;
 
@@ -92,9 +93,7 @@ public class PauseMenu : MonoBehaviour
             case 1: 
                 Time.timeScale = 1f;
                 InputManager.SwitchMap(InputManager.Actions.UIcontrolls);
-                SceneManager.LoadScene(0);
                 GameManager.Instance.ExitGame();
-                GameManager.Instance.ResetPlayerPosition();
                 gameObject.SetActive(false);
                 
                 break;

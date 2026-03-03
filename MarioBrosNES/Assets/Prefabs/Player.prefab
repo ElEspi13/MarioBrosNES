@@ -128,6 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f1011d25a93f5f4e86344d692825d8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MoveInput: {x: 0, y: 0}
   _animator: {fileID: 4508621803180850716}
   _jumpForce: 9.5
   _moveForce: 3
@@ -144,6 +145,8 @@ MonoBehaviour:
   deathJumpForce: 12
   deathGravity: 3
   deathDelay: 0.4
+  _fireBallPrefab: {fileID: 3266995502463205476, guid: e4aee6fde1ca32442906c937d646c683, type: 3}
+  _firePoint: {fileID: 246023762605978551}
 --- !u!114 &3184435830373191850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,9 +160,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  smallSprite: {fileID: -1089301989, guid: f9ff466ef87b40d498eab3b55b2e1382, type: 3}
-  superSprite: {fileID: -164252388, guid: f9ff466ef87b40d498eab3b55b2e1382, type: 3}
-  fireSprite: {fileID: -310478296, guid: f9ff466ef87b40d498eab3b55b2e1382, type: 3}
   animator: {fileID: 4508621803180850716}
 --- !u!70 &1403288055097047632
 CapsuleCollider2D:

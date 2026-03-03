@@ -3488,7 +3488,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6157079681970871593, guid: 257c03b446b32164ca06fe343df03ab8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -118.952415
+      value: -116.9
       objectReference: {fileID: 0}
     - target: {fileID: 6157079681970871593, guid: 257c03b446b32164ca06fe343df03ab8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -5210,7 +5210,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6157079681970871593, guid: 257c03b446b32164ca06fe343df03ab8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -68.78242
+      value: -67.68
       objectReference: {fileID: 0}
     - target: {fileID: 6157079681970871593, guid: 257c03b446b32164ca06fe343df03ab8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -12678,7 +12678,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6157079681970871593, guid: 257c03b446b32164ca06fe343df03ab8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -120.43242
+      value: -118.6
       objectReference: {fileID: 0}
     - target: {fileID: 6157079681970871593, guid: 257c03b446b32164ca06fe343df03ab8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -12878,7 +12878,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6157079681970871593, guid: 257c03b446b32164ca06fe343df03ab8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -70.71242
+      value: -69.04
       objectReference: {fileID: 0}
     - target: {fileID: 6157079681970871593, guid: 257c03b446b32164ca06fe343df03ab8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -13418,6 +13418,7 @@ MonoBehaviour:
   _playerPrefab: {fileID: 4678718109084395085, guid: 017e1d07b003df649b23570a74ba591a, type: 3}
   _cameraFollow: {fileID: 519420033}
   _player: {fileID: 0}
+  _pauseMenu: {fileID: 0}
   currentCheckpoint: 0
   stats:
     score: 0
@@ -13936,6 +13937,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f75b3db0f227c0246b616bdb065b9da3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  direction: 0
   sceneName: Secret1-1
   checkpoint: 3
 --- !u!61 &1948725794
@@ -14504,7 +14506,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 925692897113329651, guid: 7e57f7d52bd08dc42b83cfdf56cd73c7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -66.14241
+      value: -62.58
       objectReference: {fileID: 0}
     - target: {fileID: 925692897113329651, guid: 7e57f7d52bd08dc42b83cfdf56cd73c7, type: 3}
       propertyPath: m_LocalPosition.y
@@ -14750,7 +14752,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6157079681970871593, guid: 257c03b446b32164ca06fe343df03ab8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -147.22241
+      value: -145.31
       objectReference: {fileID: 0}
     - target: {fileID: 6157079681970871593, guid: 257c03b446b32164ca06fe343df03ab8, type: 3}
       propertyPath: m_LocalPosition.y

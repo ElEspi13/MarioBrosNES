@@ -115,7 +115,8 @@ public class GameManager : MonoBehaviour
             if (cp.checkpointID == currentCheckpoint)
             {
                 _player.transform.position = cp.transform.position;
-                _cameraFollow.SetTarget(_player.transform);
+                if(_cameraFollow!=null) _cameraFollow.SetTarget(_player.transform);
+
             }
         }
     }
@@ -147,14 +148,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     internal void ExitGame()
     {
-        stats.ResetGameStats();
-        if (_timerCoroutine != null)
-        {
-            StopCoroutine(_timerCoroutine);
-            _timerCoroutine = null;
-        }
-        HUDManager.Instance.UpdateHUD(stats);
-        HUDManager.Instance.timeText.text = "";
+        Destroy(_player);
+        GameOver();
     }
 
     /// <summary>
@@ -178,8 +173,7 @@ public class GameManager : MonoBehaviour
         InputManager.DisableMap(InputManager.Actions.UIcontrolls);
         yield return null;
 
-        yield return HUDManager.Instance.ShowLevelStartScreen();
-
+        yield return HUDManager.Instance.ShowGameOverScreen();
         stats.ResetGameStats();
         SpawnPlayer(_playerPrefab.transform.position);
         InputManager.SwitchMap(InputManager.Actions.UIcontrolls);

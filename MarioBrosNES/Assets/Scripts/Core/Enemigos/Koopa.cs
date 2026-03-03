@@ -81,6 +81,7 @@ public class Koopa : EnemigoBase
         isMovingShell = false;
         rb.velocity = Vector2.zero;
         wakeUpCounter = wakeUpTime;
+        GameManager.Instance.ResetShellCombo();
     }
 
 

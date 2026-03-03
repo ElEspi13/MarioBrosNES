@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -15,10 +16,13 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D _rg;
     private Collider2D _col;
     private SpriteRenderer _spriteRenderer;
-    private Vector2 _moveInput;
+    
+    public Vector2 MoveInput;
 
 
     [SerializeField] private Animator _animator;
+
+    [Header("Configuración de movimiento")]
     [SerializeField] private float _jumpForce;
     [SerializeField] private float _moveForce;
     [SerializeField] private float _maxVelocity;
@@ -32,6 +36,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float deathJumpForce = 12f;
     [SerializeField] private float deathGravity = 3f;
     [SerializeField] private float deathDelay = 0.4f;
+
+    [SerializeField] private GameObject _fireBallPrefab;
+    [SerializeField] private Transform _firePoint;
+    private List<FireBall> activeFireBalls = new List<FireBall>();
+    private int maxFireBalls = 2;
 
     private bool _isRunning;
     private bool _jumpStarted;
@@ -65,7 +74,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         if(_isDead) return;
-        this._moveInput = InputManager.Actions.Player.Move.ReadValue<Vector2>();
+        this.MoveInput = InputManager.Actions.Player.Move.ReadValue<Vector2>();
 
         bool grounded = IsGrounded();
         // Detectamos el momento de despegar
@@ -74,7 +83,7 @@ public class PlayerController : MonoBehaviour
             _animator.SetBool("isJumping", true);
         }
 
-        // Detectamos aterrizaje REAL (venimos del aire)
+        // Detectamos aterrizaje
         if (_jumpStarted && grounded && !_wasGrounded)
         {
             _jumpStarted = false;
@@ -109,9 +118,9 @@ public class PlayerController : MonoBehaviour
         }
 
 
-        if (_moveInput.x > 0.1f)
+        if (MoveInput.x > 0.1f)
            _spriteRenderer.flipX = false;
-        else if (_moveInput.x < -0.1f)
+        else if (MoveInput.x < -0.1f)
            _spriteRenderer.flipX = true;
         
     }
@@ -137,6 +146,27 @@ public class PlayerController : MonoBehaviour
             {
                 GameManager.Instance.TogglePause();
             }
+        }
+
+    private void OnFirePressed(InputAction.CallbackContext ctx)
+    {
+
+
+        if (GetComponent<PlayerManager>().state == PlayerManager.PlayerState.Fire)
+        {
+            // Limitar cantidad de bolas activas
+            activeFireBalls.RemoveAll(fb => fb == null);
+            if (activeFireBalls.Count >= maxFireBalls) return;
+
+            // Instanciar bola de fuego
+            GameObject fbObj = Instantiate(_fireBallPrefab, _firePoint.position, Quaternion.identity);
+            FireBall fireBall = fbObj.GetComponent<FireBall>();
+
+            bool facingRight = !_spriteRenderer.flipX;
+            fireBall.Initialize(facingRight);
+
+            activeFireBalls.Add(fireBall);
+        }
     }
 
     /// <summary>
@@ -144,9 +174,9 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void Move()
     {
-        float targetSpeed = _moveInput.x * _maxVelocity;
+        float targetSpeed = MoveInput.x * _maxVelocity;
 
-        float accelRate = (_moveInput.x != 0) ? _acceleration : _deceleration;
+        float accelRate = (MoveInput.x != 0) ? _acceleration : _deceleration;
 
         float newVelocityX = Mathf.MoveTowards(_rg.velocity.x, targetSpeed, accelRate * Time.fixedDeltaTime);
 
@@ -176,7 +206,7 @@ public class PlayerController : MonoBehaviour
     private void AnimatorBrake()
     {
         float velocityX = _rg.velocity.x;
-        float inputX = _moveInput.x;
+        float inputX = MoveInput.x;
 
         bool braking =
             Mathf.Abs(velocityX) >= 0f &&
@@ -228,12 +258,14 @@ public class PlayerController : MonoBehaviour
         
     }
 
+    private void OnEnable()
+    {
+        InputManager.Actions.Player.Run.performed += OnFirePressed;
+    }
     private void OnDisable()
     {
-        if (InputManager.Actions != null)
-        {
-            InputManager.Actions.Player.Jump.performed -= HandleJump;
-        }
+        InputManager.Actions.Player.Jump.performed -= HandleJump;
+        InputManager.Actions.Player.Run.performed -= OnFirePressed;
     }
 
     /// <summary>

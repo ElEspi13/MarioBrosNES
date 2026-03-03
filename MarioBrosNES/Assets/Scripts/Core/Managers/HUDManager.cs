@@ -15,6 +15,9 @@ public class HUDManager : MonoBehaviour
     [SerializeField] private GameObject loadingPanel;
     [SerializeField] private TextMeshProUGUI loadingLivesText;
 
+    public GameObject Vidas;
+    public TextMeshProUGUI GameOverText;
+
     private void Awake()
     {
         if (Instance == null)
@@ -53,7 +56,6 @@ public class HUDManager : MonoBehaviour
     {
         // Activamos panel negro
         loadingPanel.SetActive(true);
-        loadingLivesText.enabled = true;
 
         loadingLivesText.text = "x " + GameManager.Instance.stats.lives;
 
@@ -64,7 +66,25 @@ public class HUDManager : MonoBehaviour
 
         // Quitamos pantalla
         loadingPanel.SetActive(false);
-        loadingLivesText.enabled = false;
+
+        Time.timeScale = 1f;
+    }
+    public IEnumerator ShowGameOverScreen()
+    {
+        // Activamos panel negro
+        loadingPanel.SetActive(true);
+        Vidas.SetActive(false);
+        GameOverText.gameObject.SetActive(true);
+
+        Time.timeScale = 0f;
+
+        // Esperamos en tiempo REAL
+        yield return new WaitForSecondsRealtime(5f);
+
+        // Quitamos pantalla
+        loadingPanel.SetActive(false);
+        Vidas.SetActive(true);
+        GameOverText.gameObject.SetActive(false);
 
         Time.timeScale = 1f;
     }
