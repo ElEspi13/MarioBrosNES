@@ -169,13 +169,25 @@ public class GameManager : MonoBehaviour
     private IEnumerator GameOverRoutine()
     {
 
-        yield return SceneManager.LoadSceneAsync(0);
-        InputManager.DisableMap(InputManager.Actions.UIcontrolls);
-        yield return null;
+        // Empezamos a cargar la escena en segundo plano
+        AsyncOperation loadOperation = SceneManager.LoadSceneAsync(0);
+        loadOperation.allowSceneActivation = false;
 
-        yield return HUDManager.Instance.ShowGameOverScreen();
-        stats.ResetGameStats();
         SpawnPlayer(_playerPrefab.transform.position);
+
+        // Mostrar pantalla de Game Over
+        yield return HUDManager.Instance.ShowGameOverScreen();
+
+        // Cuando termina la animación activamos la escena
+        loadOperation.allowSceneActivation = true;
+
+        yield return loadOperation;
+
+        InputManager.DisableMap(InputManager.Actions.UIcontrolls);
+
+        stats.ResetGameStats();
+        HUDManager.Instance.UpdateHUD(stats);
+
         InputManager.SwitchMap(InputManager.Actions.UIcontrolls);
 
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
@@ -87,5 +88,10 @@ public class HUDManager : MonoBehaviour
         GameOverText.gameObject.SetActive(false);
 
         Time.timeScale = 1f;
+    }
+
+    internal void Reset()
+    {
+        
     }
 }

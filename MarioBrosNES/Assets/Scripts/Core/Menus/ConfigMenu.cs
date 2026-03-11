@@ -36,11 +36,11 @@ public class ConfigMenu : MonoBehaviour
     {
         if (!canNavigate) return;
 
-        Vector2 input = ctx.ReadValue<Vector2>();
+        Vector2 direction =InputManager.Actions.UIcontrolls.Navigate.ReadValue<Vector2>();
 
-        if (input.y > 0.5f)
+        if (direction.y > 0)
             selectedIndex--;
-        else if (input.y < -0.5f)
+        else if (direction.y < 0)
             selectedIndex++;
 
         if (selectedIndex < 0)

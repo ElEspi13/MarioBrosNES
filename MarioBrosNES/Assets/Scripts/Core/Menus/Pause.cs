@@ -44,11 +44,11 @@ public class PauseMenu : MonoBehaviour
     private void OnNavigate(InputAction.CallbackContext ctx)
     {
 
-        Vector2 input = ctx.ReadValue<Vector2>();
+        Vector2 direction = InputManager.Actions.UIcontrolls.Navigate.ReadValue<Vector2>();
 
-        if (input.y > 0.5f)
+        if (direction.y > 0.5f)
             selectedIndex--;
-        else if (input.y < -0.5f)
+        else if (direction.y < -0.5f)
             selectedIndex++;
 
         if (selectedIndex < 0)
